@@ -136,6 +136,43 @@ int main() {
         cout << "Error [" << e.code << "]: " << e.name << endl;
     }
 
+        try {
+        int data;
+        q.deQueue(data);
+        cout << "Dequeued: " << data << endl;
+        q.display();
+    } catch (const Exception& e) {
+        cout << "Error [" << e.code << "]: " << e.name << endl;
+    }
+
+    try {
+        int data;
+        q.deQueue(data);
+        cout << "Dequeued: " << data << endl;
+        q.display();
+    } catch (const Exception& e) {
+        cout << "Error [" << e.code << "]: " << e.name << endl;
+    }
+
+    try {
+        int data;
+        q.deQueue(data);
+        cout << "Dequeued: " << data << endl;
+        q.display();
+    } catch (const Exception& e) {
+        cout << "Error [" << e.code << "]: " << e.name << endl;
+    }
+
+    try {
+        int data;
+        q.deQueue(data);
+        cout << "Dequeued: " << data << endl;
+        q.display();
+    } catch (const Exception& e) {
+        cout << "Error [" << e.code << "]: " << e.name << endl;
+    }
+
+    
     try {
         q.enQueue(60);
         q.enQueue(70);
