@@ -11,11 +11,22 @@ Tree::Tree() {
     root= nullptr;
 }
 
+Tree::~Tree() {
+    deleteTree(root);
+}
+
+void Tree::deleteTree(Node* node) {
+    if (node == nullptr) return;
+    deleteTree(node->left);
+    deleteTree(node->right);
+    delete node;
+}
+
 void Tree::addNodes(int data) {
     //create Node
     Node *newNode = new Node(data);
     Node *parent = nullptr;
-    if(root = nullptr)
+    if(root == nullptr)
     {
         root=newNode;
     }
@@ -39,7 +50,7 @@ void Tree::addNodes(int data) {
             parent->right = newNode;
         } else
         {
-            current->left = newNode;
+            parent->left = newNode;
         }
     }
 
@@ -64,16 +75,17 @@ Node *Tree::getNodeByData(int data) {
 int Tree::getParentByData(int data) {
     Node *node = getNodeByData(data);
     if (node == nullptr) {
-        throw "Root Not have Parent";
+        throw std::runtime_error("Node not found");
+        //throw "Root Not have Parent";
     }
-    if (node!=nullptr) {
-        Node *res = getParent(node);
-        if (res!=nullptr) {
-            return res->data;
-        }
+    if (node == root) {
+        throw std::runtime_error("Root node does not have a parent");
     }
-    throw "Not Found";
-
+    Node* parent = getParent(node);
+    if (parent != nullptr) {
+        return parent->data;
+    }
+    throw std::runtime_error("Parent not found");
 }
 
 Node *Tree::getParent(Node *node) {
@@ -109,7 +121,39 @@ Node *Tree::getMinLeft(Node *node) {
 }
 
 void Tree::Remove(int data) {
+    Node* node = getNodeByData(data);
+    if (node == nullptr) {
+        throw std::runtime_error("Node not found");
+    }
 
+    Node* parent = getParent(node);
+
+    // Case 1: No children
+    if (node->left == nullptr && node->right == nullptr) {
+        if (parent->left == node) {
+            parent->left = nullptr;
+        } else {
+            parent->right = nullptr;
+        }
+        delete node;
+    }
+    // Case 2: One child
+    else if (node->left == nullptr || node->right == nullptr) {
+        Node* child = (node->left != nullptr) ? node->left : node->right;
+        if (parent->left == node) {
+            parent->left = child;
+        } else {
+            parent->right = child;
+        }
+        delete node;
+    }
+    // Case 3: Two children
+    else {
+        Node* successor = getMinLeft(node->right);
+        int successorData = successor->data;
+        Remove(successor->data); // Recursively remove successor
+        node->data = successorData;
+    }
 }
 
 void Tree::display(Node *node) {
@@ -124,6 +168,5 @@ void Tree::display(Node *node) {
 
 void Tree::displayAll() {
     display(root);
-
 }
 
