@@ -10,6 +10,7 @@ class Tree{
 public:
     Node *root;
     Tree();
+    ~Tree();
     void addNodes(int data);
     int getParentByData(int data);
     void Remove(int data);
@@ -20,6 +21,7 @@ private:
     Node *getMaxRight(Node *node);
     Node *getMinLeft(Node *node);
     void display(Node *node);
+    void deleteTree(Node *node);
 };
 
 
