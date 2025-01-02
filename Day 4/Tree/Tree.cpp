@@ -121,7 +121,70 @@ Node *Tree::getMinLeft(Node *node) {
 }
 
 void Tree::Remove(int data) {
-    Node* node = getNodeByData(data);
+        Node * node = getNodeByData(data);
+    if (node == nullptr) {
+        return;
+    }
+    //Remove Root ==>First & Last
+    if (node == root) {
+        if (root->left == nullptr && root->right == nullptr) {
+            root= nullptr;
+        }
+        else if (root->left == nullptr) {
+            root = root->right;
+        }
+        else if (root->right == nullptr) {
+            root = root->left;
+        }
+        // root->left != nullptr || root-<right !=nullptr
+        else {
+            // Define New Root ====> First Left Child
+            Node * newRoot = root->left;
+            Node * maxR = getMaxRight(newRoot);
+            //maxR->right-----> First Right Child
+            maxR->right = root->right;
+            root = newRoot;
+        }
+    }
+        //Remove Not Root
+        else {
+            Node*parent = getParent(node);
+            if (node->left == nullptr && node->right == nullptr) {
+                if (parent->left == node) {
+                    parent->left= nullptr;
+                }
+                else {
+                    parent->right=nullptr;
+                }
+            }
+            else if (node->left == nullptr) {
+                if (parent->left == node) {
+                    parent->left = node->right;
+                }
+            }
+            else if (node->right == nullptr) {
+                if (parent->right == node) {
+                    parent->right = node->left;
+                }            }
+            // root->left != nullptr || root-<right !=nullptr
+            else {
+                // Define New Root ====> First Left Child
+                Node * newParent = parent->left;
+                Node * maxR = getMaxRight(newParent);
+                //maxR->right-----> First Right Child
+                maxR->right = node->right;
+                if (parent->left == node) {
+                    parent->left = newParent;
+                }
+                else {
+                    parent->right=newParent;
+                }
+            }
+        }
+    delete node;
+
+    
+    /*Node* node = getNodeByData(data);
     if (node == nullptr) {
         throw std::runtime_error("Node not found");
     }
@@ -153,7 +216,7 @@ void Tree::Remove(int data) {
         int successorData = successor->data;
         Remove(successor->data); // Recursively remove successor
         node->data = successorData;
-    }
+    }*/
 }
 
 void Tree::display(Node *node) {
